@@ -132,7 +132,7 @@ const UpdateBlog = () => {
                                     <Button
                                         variant="outlined"
                                         color="default"
-                                        onClick={() => navigate('/blog')}
+                                        onClick={() => navigate('/Myblog')}
                                     >
                                         Cancel
                                     </Button>
