@@ -11,7 +11,7 @@ const Footer = () => {
         textAlign: 'center',
         color: '#ECEFF1', 
       }}
-    >
+    > 
       <Typography variant="body2" color="inherit">
         © 2024 BlogApp | All Rights Reserved
       </Typography>

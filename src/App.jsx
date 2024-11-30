@@ -14,6 +14,7 @@ import CreateBlog from './Pages/CreateBlog';
 import MyBlogs from './Pages/MyBlogs';
 import BlogDetails from './Pages/BlogDetails';
 import UpdateBlog from './Pages/UpdateBlog';
+import NotFound from './Pages/NotFound';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
               <Route path="/Edit-Blog/:id" element={<UpdateBlog />} />
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </Authprovider>
