@@ -77,6 +77,10 @@ const MyBlogs = () => {
     }
   };
 
+  const handleRead = (id) => {
+    navigate(`/blog/${id}`); 
+  };
+
   return (
     <Container>
       <Toaster />
@@ -109,27 +113,35 @@ const MyBlogs = () => {
           ) : (
             myBlogs.map((blog) => (
               <Grid item xs={12} sm={6} md={4} key={blog.id}>
-                <Card>
-                  <CardContent>
-                    <Typography variant="h6">{blog.title}</Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {blog.content.substring(0, 100)}...
-                    </Typography>
-                    <Typography variant="body2" color="secondary">
-                      Author: {blog?.author?.name}
-                    </Typography>
-                    <div style={{ marginTop: '10px' }}>
-                      {blog.tags && blog.tags.length > 0 ? (
-                        blog.tags.map((tag, index) => (
-                          <Chip key={index} label={tag} style={{ margin: '5px' }} />
-                        ))
-                      ) : (
-                        <Typography variant="body2" color="textSecondary">
-                          No tags available
-                        </Typography>
-                      )}
-                    </div>
-                  </CardContent>
+                <Card
+                  style={{
+                    height: '300px', 
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+<CardContent style={{ flexGrow: 1, overflow: 'hidden' }}>
+  <Typography variant="h6">{blog.title}</Typography>
+  <Typography variant="body2" color="textSecondary" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+    {blog.content.substring(0, 100)}...
+  </Typography>
+  <Typography variant="body2" color="secondary">
+    Author: {blog?.author?.name}
+  </Typography>
+  <div style={{ marginTop: '10px' }}>
+    {blog.tags && blog.tags.length > 0 ? (
+      blog.tags.map((tag, index) => (
+        <Chip key={index} label={tag} style={{ margin: '5px' }} />
+      ))
+    ) : (
+      <Typography variant="body2" color="textSecondary">
+        No tags available
+      </Typography>
+    )}
+  </div>
+</CardContent>
+
+
                   <CardActions>
                     <Button
                       size="small"
@@ -146,6 +158,13 @@ const MyBlogs = () => {
                       }
                     >
                       Delete
+                    </Button>
+                    <Button
+                      size="small"
+                      color="default"
+                      onClick={() => handleRead(blog.id)}
+                    >
+                      Read
                     </Button>
                   </CardActions>
                 </Card>

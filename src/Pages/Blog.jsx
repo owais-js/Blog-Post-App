@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { db } from "../Config/FirebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme({
@@ -51,7 +51,8 @@ function Blog() {
     const fetchBlogs = async () => {
       try {
         const blogCollection = collection(db, "blogs");
-        const blogSnapshot = await getDocs(blogCollection);
+        const blogQuery = query(blogCollection, orderBy("createdAt", "desc"));
+        const blogSnapshot = await getDocs(blogQuery);
         const blogList = blogSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -100,9 +101,12 @@ function Blog() {
                     style={{
                       boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
                       borderRadius: "15px",
+                      display: "flex",
+                      flexDirection: "column",
+                      height: "100%",
                     }}
                   >
-                    <CardContent>
+                    <CardContent style={{ flex: 1 }}>
                       <Typography variant="h6" gutterBottom color="primary">
                         {blog.title}
                       </Typography>
