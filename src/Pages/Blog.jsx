@@ -33,11 +33,12 @@ const theme = createTheme({
       fontWeight: 600,
     },
     body2: {
-      fontSize: "0.9rem",
-      lineHeight: 1.5,
+      fontSize: "0.95rem",
+      lineHeight: 1.6,
     },
     button: {
       textTransform: "none",
+      fontWeight: 500,
     },
   },
 });
@@ -78,6 +79,7 @@ function Blog() {
             gutterBottom
             color="primary"
             marginBottom={"2rem"}
+            fontWeight={600}
           >
             Welcome to the Blog Platform!
           </Typography>
@@ -98,12 +100,16 @@ function Blog() {
               {blogs.map((blog) => (
                 <Grid item xs={12} sm={6} md={4} key={blog.id}>
                   <Card
-                    style={{
-                      boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
-                      borderRadius: "15px",
+                    sx={{
+                      boxShadow: 3,
+                      borderRadius: 2,
                       display: "flex",
                       flexDirection: "column",
                       height: "100%",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                        transition: "transform 0.3s ease-in-out",
+                      },
                     }}
                   >
                     <CardContent style={{ flex: 1 }}>
@@ -117,8 +123,8 @@ function Blog() {
                       >
                         {blog.content.substring(0, 100)}...
                       </Typography>
-                      <Typography variant="body2" color="#263238">
-                        Author: {blog?.author?.name}
+                      <Typography variant="body2" color="text.primary">
+                        Author: {blog?.author?.name || "Unknown"}
                       </Typography>
                     </CardContent>
 
@@ -126,8 +132,15 @@ function Blog() {
                       <Button
                         size="small"
                         color="primary"
-                        style={{ textTransform: "none" }}
                         onClick={() => navigate(`/blog/${blog.id}`)}
+                        sx={{
+                          fontWeight: 600,
+                          backgroundColor: theme.palette.primary.main,
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: theme.palette.primary.dark,
+                          },
+                        }}
                       >
                         Read More
                       </Button>

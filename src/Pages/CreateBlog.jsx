@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { TextField, Button, Grid, Typography, Card, CardContent, Autocomplete, Chip } from '@mui/material';
+import { TextField, Button, Grid, Typography, Card, CardContent, Autocomplete, Chip, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../Context/AuthContext';
 import { db } from '../Config/FirebaseConfig';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
+import { blue, grey } from '@mui/material/colors';
 
 const CreateBlog = () => {
   const [title, setTitle] = useState('');
@@ -44,12 +45,12 @@ const CreateBlog = () => {
   };
 
   return (
-    <Grid container spacing={2} justifyContent="center" style={{ marginTop: '20px' }}>
+    <Grid container spacing={3} justifyContent="center" style={{ marginTop: '40px' }}>
       <Toaster />
       <Grid item xs={12} sm={8} md={6}>
-        <Card>
+        <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
           <CardContent>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom color="primary" sx={{ fontWeight: 'bold',textAlign:"center" }}>
               Create New Blog
             </Typography>
             <form onSubmit={handleSubmit}>
@@ -60,6 +61,12 @@ const CreateBlog = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 style={{ marginBottom: '20px' }}
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px',
+                  },
+                }}
               />
               <TextField
                 label="Content"
@@ -71,6 +78,12 @@ const CreateBlog = () => {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 style={{ marginBottom: '20px' }}
+                required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px',
+                  },
+                }}
               />
               <Autocomplete
                 multiple
@@ -88,22 +101,37 @@ const CreateBlog = () => {
                 )}
                 style={{ marginBottom: '20px' }}
               />
-              <Grid container spacing={2} justifyContent="center">
-                <Grid item>
-                  <Button variant="contained" color="primary" type="submit">
-                    Create Blog
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="outlined"
-                    color="default"
-                    onClick={() => navigate('/profile')}
-                  >
-                    Cancel
-                  </Button>
-                </Grid>
-              </Grid>
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  sx={{
+                    backgroundColor: blue[500],
+                    '&:hover': { backgroundColor: blue[700] },
+                    fontWeight: 'bold',
+                    borderRadius: '4px',
+                    padding: '0.5rem 1.5rem',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  Create Blog
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="default"
+                  onClick={() => navigate('/profile')}
+                  sx={{
+                    borderColor: grey[500],
+                    '&:hover': { borderColor: grey[700], backgroundColor: grey[100] },
+                    borderRadius: '4px',
+                    padding: '0.5rem 1.5rem',
+                    fontSize: '0.875rem',
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Box>
             </form>
           </CardContent>
         </Card>

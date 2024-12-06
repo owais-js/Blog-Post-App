@@ -8,11 +8,13 @@ import {
     CardContent,
     Autocomplete,
     Chip,
+    Box,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../Config/FirebaseConfig';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
+import { blue, grey } from '@mui/material/colors';
 
 const UpdateBlog = () => {
     const [title, setTitle] = useState('');
@@ -63,7 +65,7 @@ const UpdateBlog = () => {
             toast.success('Blog updated successfully!');
             setTimeout(() => {
                 navigate('/Myblog');
-              },500);
+            }, 500);
         } catch (error) {
             toast.dismiss();
             toast.error('Failed to update the blog.');
@@ -72,12 +74,12 @@ const UpdateBlog = () => {
     };
 
     return (
-        <Grid container spacing={2} justifyContent="center" style={{ marginTop: '20px' }}>
+        <Grid container spacing={3} justifyContent="center" style={{ marginTop: '40px' }}>
             <Toaster />
             <Grid item xs={12} sm={8} md={6}>
-                <Card>
+                <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
                     <CardContent>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography color='primary' variant="h4" gutterBottom sx={{ fontWeight: 'bold',textAlign:'center'}}>
                             Update Blog
                         </Typography>
                         <form onSubmit={handleSubmit}>
@@ -88,6 +90,12 @@ const UpdateBlog = () => {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 style={{ marginBottom: '20px' }}
+                                required
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '8px',
+                                    },
+                                }}
                             />
                             <TextField
                                 label="Content"
@@ -98,6 +106,12 @@ const UpdateBlog = () => {
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 style={{ marginBottom: '20px' }}
+                                required
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        borderRadius: '8px',
+                                    },
+                                }}
                             />
                             <Autocomplete
                                 multiple
@@ -122,22 +136,37 @@ const UpdateBlog = () => {
                                 style={{ marginBottom: '20px' }}
                             />
 
-                            <Grid container spacing={2} justifyContent="center">
-                                <Grid item>
-                                    <Button variant="contained" color="primary" type="submit">
-                                        Update Blog
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant="outlined"
-                                        color="default"
-                                        onClick={() => navigate('/Myblog')}
-                                    >
-                                        Cancel
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                            <Box display="flex" justifyContent="space-between">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    sx={{
+                                        backgroundColor: blue[500],
+                                        '&:hover': { backgroundColor: blue[700] },
+                                        fontWeight: 'bold',
+                                        borderRadius: '4px',
+                                        padding: '0.5rem 1.5rem',
+                                        fontSize: '0.875rem',
+                                    }}
+                                >
+                                    Update Blog
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    color="default"
+                                    onClick={() => navigate('/Myblog')}
+                                    sx={{
+                                        borderColor: grey[500],
+                                        '&:hover': { borderColor: grey[700], backgroundColor: grey[100] },
+                                        borderRadius: '4px',
+                                        padding: '0.5rem 1.5rem',
+                                        fontSize: '0.875rem',
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </Box>
                         </form>
                     </CardContent>
                 </Card>
