@@ -9,17 +9,22 @@ import {
     Autocomplete,
     Chip,
     Box,
+    Avatar,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import { db } from '../Config/FirebaseConfig';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
 import { blue, grey } from '@mui/material/colors';
+import uploadToCloudinary from '../Config/UploadToCloudinary';
 
 const UpdateBlog = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tags, setTags] = useState([]);
+    const [currentImage, setCurrentImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [author, setAuthor] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -33,6 +38,8 @@ const UpdateBlog = () => {
                     setTitle(blogData.title);
                     setContent(blogData.content);
                     setTags(blogData.tags || []);
+                    setCurrentImage(blogData.author?.image || null);
+                    setAuthor(blogData.author || {});
                 } else {
                     toast.error('Blog not found');
                     navigate('/Myblog');
@@ -47,18 +54,32 @@ const UpdateBlog = () => {
         fetchBlog();
     }, [id, navigate]);
 
+    const handleImageChange = (e) => {
+        setSelectedImage(e.target.files[0]);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         toast.loading('Updating blog...');
 
-        const updatedBlogData = {
-            title,
-            content,
-            tags,
-            Edited: true,
-        };
-
         try {
+            let updatedImage = currentImage;
+
+            if (selectedImage) {
+                updatedImage = await uploadToCloudinary(selectedImage);
+            }
+
+            const updatedBlogData = {
+                title,
+                content,
+                tags,
+                author: {
+                    ...author,
+                    image: updatedImage,
+                },
+                Edited: true,
+            };
+
             const blogRef = doc(db, 'blogs', id);
             await updateDoc(blogRef, updatedBlogData);
             toast.dismiss();
@@ -79,10 +100,53 @@ const UpdateBlog = () => {
             <Grid item xs={12} sm={8} md={6}>
                 <Card sx={{ boxShadow: 3, borderRadius: 2 }}>
                     <CardContent>
-                        <Typography color='primary' variant="h4" gutterBottom sx={{ fontWeight: 'bold',textAlign:'center'}}>
+                        <Typography
+                            color="primary"
+                            variant="h4"
+                            gutterBottom
+                            sx={{ fontWeight: 'bold', textAlign: 'center' }}
+                        >
                             Update Blog
                         </Typography>
                         <form onSubmit={handleSubmit}>
+                            <Box sx={{ mb: 3, textAlign: 'center' }}>
+                                {currentImage ? (
+                                    <Avatar
+                                        src={selectedImage ? URL.createObjectURL(selectedImage) : currentImage}
+                                        alt="Blog Image"
+                                        sx={{
+                                            width: 80,
+                                            height: 80,
+                                            margin: '0 auto',
+                                        }}
+                                    />
+                                ) : (
+                                    <Avatar
+                                        sx={{
+                                            width: 80,
+                                            height: 80,
+                                            margin: '0 auto',
+                                        }}
+                                    />
+                                )}
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    sx={{
+                                        mt: 2,
+                                        textTransform: 'none',
+                                    }}
+                                >
+                                    Upload New Image
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        hidden
+                                    />
+                                </Button>
+                            </Box>
+
                             <TextField
                                 label="Title"
                                 variant="outlined"

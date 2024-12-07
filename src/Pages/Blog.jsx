@@ -9,6 +9,7 @@ import {
   Button,
   CircularProgress,
   Box,
+  CardMedia,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { db } from "../Config/FirebaseConfig";
@@ -106,12 +107,18 @@ function Blog() {
                       display: "flex",
                       flexDirection: "column",
                       height: "100%",
+                      width: "300px",
                       "&:hover": {
                         transform: "scale(1.05)",
                         transition: "transform 0.3s ease-in-out",
                       },
                     }}
                   >
+                    <CardMedia
+                      sx={{ overflow: "hidden", height: "150px" }}
+                    >
+                      <img src={blog?.author?.image} alt="" width={"100%"} />
+                    </CardMedia>
                     <CardContent style={{ flex: 1 }}>
                       <Typography variant="h6" gutterBottom color="primary">
                         {blog.title}
@@ -128,7 +135,9 @@ function Blog() {
                       </Typography>
                     </CardContent>
 
-                    <CardActions>
+                    <CardActions
+                      sx={{ justifyContent: "center" }}
+                    >
                       <Button
                         size="small"
                         color="primary"
@@ -136,6 +145,7 @@ function Blog() {
                         sx={{
                           fontWeight: 600,
                           backgroundColor: theme.palette.primary.main,
+                          alignItems: "center",
                           color: "white",
                           "&:hover": {
                             backgroundColor: theme.palette.primary.dark,

@@ -4,6 +4,9 @@ import { Button, Card, CardContent, Typography, Grid, Avatar } from '@mui/materi
 import { useAuth, AuthContext } from '../Context/AuthContext';
 import toast, { Toaster } from 'react-hot-toast';
 import { blue, purple, grey } from '@mui/material/colors';
+const defaultProfilePic =
+  "https://ufrsante.uidt.sn/wp-content/uploads/2023/09/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg";
+
 
 const Profile = () => {
   const { logout } = useAuth();
@@ -38,20 +41,20 @@ const Profile = () => {
         <Card variant="outlined" sx={{ boxShadow: 3 }}>
           <CardContent>
             <Grid container justifyContent="center">
-              <Avatar 
-                alt={displayName} 
-                src="/path/to/profile-image.jpg" 
-                sx={{ width: 80, height: 80, marginBottom: 2 }} 
+              <Avatar
+                alt={currentuser?.displayName || "User"}
+                src={currentuser?.photoURL || defaultProfilePic}
+                sx={{ width: 80, height: 80, marginBottom: 2 }}
               />
             </Grid>
-            <Typography variant="h4" gutterBottom color="primary.main" sx={{ fontWeight: 'bold',textAlign:"center"}}>
+            <Typography variant="h4" gutterBottom color="primary.main" sx={{ fontWeight: 'bold', textAlign: "center" }}>
               Welcome, {displayName}!
             </Typography>
-            <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.1rem',textAlign:"center" }}>
+            <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.1rem', textAlign: "center" }}>
               Email: {userEmail}
             </Typography>
 
-            <Typography variant="h6" sx={{ marginTop: '20px', color: grey[800],textAlign:"center" }}>
+            <Typography variant="h6" sx={{ marginTop: '20px', color: grey[800], textAlign: "center" }}>
               What are you thinking today?
             </Typography>
 

@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { AuthContext } from '../Context/AuthContext';
+import { Avatar } from '@mui/material';
+const defaultProfilePic =
+  "https://ufrsante.uidt.sn/wp-content/uploads/2023/09/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg";
+
 
 const Header = () => {
+  const { currentuser } = useContext(AuthContext);  
+  
   return (
+  
     <AppBar
       position="static"
       sx={{
@@ -25,8 +32,8 @@ const Header = () => {
         </Typography>
         <Button
           sx={{
-            color: '#ECEFF1', 
-            '&:hover': { backgroundColor: '#455A64' }, 
+            color: '#ECEFF1',
+            '&:hover': { backgroundColor: '#455A64' },
             fontWeight: '500',
           }}
           component={Link}
@@ -36,8 +43,8 @@ const Header = () => {
         </Button>
         <Button
           sx={{
-            color: '#ECEFF1', 
-            '&:hover': { backgroundColor: '#455A64' }, 
+            color: '#ECEFF1',
+            '&:hover': { backgroundColor: '#455A64' },
             fontWeight: '500',
           }}
           component={Link}
@@ -47,8 +54,8 @@ const Header = () => {
         </Button>
         <Button
           sx={{
-            color: '#ECEFF1', 
-            '&:hover': { backgroundColor: '#455A64' }, 
+            color: '#ECEFF1',
+            '&:hover': { backgroundColor: '#455A64' },
             fontWeight: '500',
           }}
           component={Link}
@@ -60,12 +67,17 @@ const Header = () => {
         <IconButton
           sx={{
             color: '#ECEFF1',
-            '&:hover': { backgroundColor: '#455A64' }, 
+            '&:hover': { backgroundColor: '#455A64' },
           }}
           component={Link}
           to="/profile"
         >
-          <AccountCircleIcon />
+          <IconButton>
+            <Avatar
+              alt={currentuser?.displayName || 'User'}
+              src={currentuser?.photoURL || defaultProfilePic}
+            />
+          </IconButton>
         </IconButton>
       </Toolbar>
     </AppBar>

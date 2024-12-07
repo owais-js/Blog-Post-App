@@ -6,37 +6,62 @@ import {
   Typography,
   Paper,
   Grid,
+  Avatar,
 } from "@mui/material";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../Config/FirebaseConfig";
 import { useNavigate, Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import uploadToCloudinary from "../Config/UploadToCloudinary";
+
+const defaultProfilePic =
+  "https://ufrsante.uidt.sn/wp-content/uploads/2023/09/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg";
 
 const Signup = () => {
   const [fullname, SetFullname] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
   const [email, SetEmail] = useState("");
   const [password, SetPassword] = useState("");
   const [loading, SetLoading] = useState(false);
   const navigate = useNavigate();
 
+
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
+  };
+
   const handleSignup = async (e) => {
-    toast.loading("Signing up!");
     e.preventDefault();
+    toast.loading("Signing up...");
     SetLoading(true);
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      const profileImage = selectedImage
+        ? await uploadToCloudinary(selectedImage)
+        : defaultProfilePic;
+
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       await updateProfile(user, {
         displayName: fullname,
+        photoURL: profileImage,
       });
+
       toast.dismiss();
       toast.success("Signup successful!");
       setTimeout(() => {
         navigate("/login");
       }, 1000);
     } catch (error) {
+      toast.dismiss();
       toast.error("Error signing up. Please try again.");
-      console.log("Error Signing up: ", error);
+      console.error("Error Signing up: ", error);
     } finally {
       SetLoading(false);
     }
@@ -95,7 +120,53 @@ const Signup = () => {
             Join us and start your blogging journey
           </Typography>
         </Box>
-        <Box component="form" noValidate onSubmit={handleSignup}>
+
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSignup}
+          sx={{ textAlign: "center" }}
+        >
+          <Box sx={{ mb: 3, textAlign: "center" }}>
+            {selectedImage ? (
+              <Avatar
+                src={URL.createObjectURL(selectedImage)}
+                alt="Selected Profile"
+                sx={{
+                  width: 80,
+                  height: 80,
+                  margin: "0 auto",
+                }}
+              />
+            ) : (
+              <Avatar
+                src={defaultProfilePic}
+                alt="Default Profile"
+                sx={{
+                  width: 80,
+                  height: 80,
+                  margin: "0 auto",
+                }}
+              />
+            )}
+            <Button
+              variant="outlined"
+              component="label"
+              sx={{
+                mt: 2,
+                textTransform: "none",
+              }}
+            >
+              Upload Profile Image
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                hidden
+              />
+            </Button>
+          </Box>
+
           <TextField
             margin="normal"
             required
@@ -139,6 +210,8 @@ const Signup = () => {
               },
             }}
           />
+
+
           <Button
             type="submit"
             fullWidth
@@ -159,6 +232,7 @@ const Signup = () => {
             {loading ? "Signing up..." : "Sign Up"}
           </Button>
         </Box>
+
         <Typography
           variant="body2"
           align="center"

@@ -12,6 +12,7 @@ import {
   Chip,
   Box,
   IconButton,
+  CardMedia,
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
@@ -113,8 +114,29 @@ function BlogDetails() {
   return (
     <Container style={{ marginTop: "2rem" }}>
       <Card>
+        <CardMedia
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "300px",
+            marginTop: "20px",
+            borderRadius: "15px",
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={blog?.author?.image}
+            alt="Blog Image"
+            style={{
+              height: "100%",
+              width: "auto",
+            }}
+          />
+        </CardMedia>
+
         <CardContent>
-          <Typography variant="h4" gutterBottom color="primary">
+          <Typography variant="h4" gutterBottom color="primary" >
             {blog.title}
           </Typography>
           <Typography

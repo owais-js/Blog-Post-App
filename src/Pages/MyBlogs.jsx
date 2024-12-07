@@ -15,6 +15,7 @@ import {
   CircularProgress,
   Chip,
   Box,
+  CardMedia,
 } from '@mui/material';
 import { db } from '../Config/FirebaseConfig';
 import { collection, query, where, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
@@ -22,6 +23,8 @@ import { useAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { blue, red, grey } from '@mui/material/colors';
+const defaultBlogImage =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmUqy_SZxyRxG5X8EFwFZhxLseYirbZcDzWQ&s";
 
 const MyBlogs = () => {
   const { currentuser } = useAuth();
@@ -80,7 +83,7 @@ const MyBlogs = () => {
   };
 
   const handleRead = (id) => {
-    navigate(`/blog/${id}`); 
+    navigate(`/blog/${id}`);
   };
 
   return (
@@ -107,7 +110,7 @@ const MyBlogs = () => {
               variant="body1"
               color="textSecondary"
               align="center"
-              sx={{ width: '100%', mt: 5 }}
+              sx={{ width: '100%', mt: 30,ml:6}}
             >
               No blogs to display.
             </Typography>
@@ -116,71 +119,93 @@ const MyBlogs = () => {
               <Grid item xs={12} sm={6} md={4} key={blog.id}>
                 <Card
                   sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
                     boxShadow: 3,
                     borderRadius: 2,
-                    bgcolor: grey[50],
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                    width: "300px",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      transition: "transform 0.3s ease-in-out",
+                    },
                   }}
                 >
-                  <CardContent sx={{ flexGrow: 1, overflow: 'hidden' }}>
-                    <Typography variant="h6" color="primary" gutterBottom>
+                  <CardMedia sx={{ overflow: "hidden", height: "150px" }}>
+                    <img
+                      src={blog?.author?.image || defaultBlogImage}
+                      alt="Blog Cover"
+                      width="100%"
+                    />
+                  </CardMedia>
+                  <CardContent style={{ flex: 1 }}>
+                    <Typography variant="h6" gutterBottom color="primary">
                       {blog.title}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="textSecondary"
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        marginBottom: '10px',
-                      }}
+                      style={{ marginBottom: "1rem" }}
                     >
                       {blog.content.substring(0, 100)}...
                     </Typography>
-                    <Typography variant="body2" color="secondary">
-                      Author: {blog?.author?.name}
+                    <Typography variant="body2" color="text.primary">
+                      Author: {blog?.author?.name || "Unknown"}
                     </Typography>
-                    <Box sx={{ marginTop: '10px' }}>
-                      {blog.tags && blog.tags.length > 0 ? (
-                        blog.tags.map((tag, index) => (
-                          <Chip key={index} label={tag} sx={{ margin: '5px' }} />
-                        ))
-                      ) : (
-                        <Typography variant="body2" color="textSecondary">
-                          No tags available
-                        </Typography>
-                      )}
-                    </Box>
+
                   </CardContent>
-                  <CardActions sx={{ justifyContent: 'space-between' }}>
+
+                  <CardActions sx={{ justifyContent: "center" }}>
                     <Button
                       size="small"
                       color="primary"
                       onClick={() => handleEdit(blog.id)}
+                      sx={{
+                        fontWeight: 600,
+                        backgroundColor: blue[700],
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: blue[900],
+                        },
+                        marginRight: 1,
+                      }}
                     >
                       Edit
                     </Button>
                     <Button
                       size="small"
                       color="secondary"
-                      onClick={() =>
-                        setDeleteDialog({ open: true, blogId: blog.id })
-                      }
+                      onClick={() => setDeleteDialog({ open: true, blogId: blog.id })}
+                      sx={{
+                        fontWeight: 600,
+                        backgroundColor: red[700],
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: red[900],
+                        },
+                        marginRight: 1,
+                      }}
                     >
                       Delete
                     </Button>
                     <Button
                       size="small"
-                      color="default"
                       onClick={() => handleRead(blog.id)}
+                      sx={{
+                        fontWeight: 600,
+                        backgroundColor: grey[700],
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: grey[900],
+                        },
+                      }}
                     >
-                      Read
+                      Read More
                     </Button>
                   </CardActions>
                 </Card>
+
+
               </Grid>
             ))
           )}
