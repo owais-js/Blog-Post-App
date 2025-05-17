@@ -1,35 +1,74 @@
 import React, { useState } from "react";
-import { Container, Typography, TextField, Button, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Card
+} from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1a237e",
+      main: "#1f4037",
+      light: "#99f2c8",
+      dark: "#173029",
+      contrastText: "#ffffff"
     },
     secondary: {
-      main: "#ffd700",
+      main: "#f8b400",
+      contrastText: "#1f4037"
     },
     background: {
-      default: "#f3f4f6",
+      default: "#ffffff",
+      paper: "#ffffff"
     },
+    text: {
+      primary: "#1f4037",
+      secondary: "#5a6d62"
+    }
   },
   typography: {
-    fontFamily: "'Poppins', sans-serif",
+    fontFamily: [
+      '"Playfair Display"',
+      '"Montserrat"',
+      'serif'
+    ].join(','),
     h4: {
       fontWeight: 700,
-      marginBottom: "1rem",
+      letterSpacing: 0.5,
+      lineHeight: 1.3
+    },
+    h5: {
+      fontWeight: 600,
+      fontFamily: '"Montserrat", sans-serif'
     },
     body1: {
-      fontSize: "1rem",
-      lineHeight: 1.8,
-      color: "#555",
+      fontFamily: '"Montserrat", sans-serif',
+      lineHeight: 1.8
+    },
+    body2: {
+      fontFamily: '"Montserrat", sans-serif',
+      fontSize: "0.95rem",
+      lineHeight: 1.7
     },
     button: {
-      textTransform: "none",
-      fontWeight: 500,
-    },
+      fontFamily: '"Montserrat", sans-serif',
+      fontWeight: 600,
+      letterSpacing: 0.5
+    }
   },
+  shape: {
+    borderRadius: 16
+  },
+  shadows: [
+    "none",
+    "0 2px 8px rgba(31, 64, 55, 0.08)",
+    "0 4px 12px rgba(31, 64, 55, 0.1)",
+    ...Array(22).fill("none")
+  ]
 });
 
 const Contact = () => {
@@ -53,101 +92,149 @@ const Contact = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container style={{ marginTop: "2rem", marginBottom: "2rem" }}>
-        <Typography
-          variant="h4"
-          align="center"
-          color="primary"
-          gutterBottom
-          fontWeight={700}
-        >
-          Contact Us
-        </Typography>
-
-        <form onSubmit={handleSubmit}>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          backgroundColor: theme.palette.background.default,
+          py: { xs: 4, md: 8 }
+        }}
+      >
+        <Container maxWidth="md" sx={{ px: { xs: 2, sm: 4 } }}>
           <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            style={{
-              maxWidth: "500px",
-              margin: "0 auto",
-              backgroundColor: "#fff",
-              padding: "2rem",
-              borderRadius: "10px",
-              boxShadow: "0px 4px 20px rgba(0,0,0,0.1)",
+            sx={{
+              textAlign: "center",
+              mb: { xs: 4, md: 6 },
+              position: "relative"
             }}
           >
-            <TextField
-              label="Name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              required
+            <Typography
+              variant="h4"
+              component="h1"
               sx={{
-                marginBottom: "1rem",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                },
-              }}
-            />
-            <TextField
-              label="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              required
-              type="email"
-              sx={{
-                marginBottom: "1rem",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                },
-              }}
-            />
-            <TextField
-              label="Message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              fullWidth
-              variant="outlined"
-              margin="normal"
-              multiline
-              rows={4}
-              required
-              sx={{
-                marginBottom: "1.5rem",
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                },
-              }}
-            />
-
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{
-                padding: "0.5rem 2rem",
-                borderRadius: "8px",
-                fontWeight: 600,
-                "&:hover": {
-                  backgroundColor: theme.palette.primary.dark,
-                },
+                fontWeight: 700,
+                color: "primary.main",
+                mb: 2,
+                position: "relative",
+                display: "inline-block",
+                "&:after": {
+                  content: '""',
+                  position: "absolute",
+                  bottom: -12,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 80,
+                  height: 4,
+                  background: "primary.light",
+                  borderRadius: 2
+                }
               }}
             >
-              Send Message
-            </Button>
+              Contact Us
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{
+                maxWidth: 700,
+                mx: "auto",
+                color: "text.secondary",
+                mt: 3
+              }}
+            >
+              Have questions or feedback? We'd love to hear from you.
+            </Typography>
           </Box>
-        </form>
-      </Container>
+
+          <Card
+            sx={{
+              p: { xs: 3, md: 5 },
+              border: '1px solid',
+              borderColor: 'primary.light',
+              position: 'relative',
+              maxWidth: 700,
+              mx: "auto",
+              '&:before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                padding: '2px',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                pointerEvents: 'none'
+              }
+            }}
+          >
+            <form onSubmit={handleSubmit}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                gap={3}
+              >
+                <TextField
+                  label="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  fullWidth
+                  variant="outlined"
+                  required
+
+                />
+                <TextField
+                  label="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  fullWidth
+                  variant="outlined"
+                  required
+                  type="email"
+
+                />
+                <TextField
+                  label="Message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  fullWidth
+                  variant="outlined"
+                  multiline
+                  rows={4}
+                  required
+                />
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  sx={{
+                    py: 1.5,
+                    borderRadius: theme.shape.borderRadius,
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    "&:hover": {
+                      backgroundColor: "primary.dark",
+                    },
+                    mt: 2
+                  }}
+                >
+                  Send Message
+                </Button>
+              </Box>
+            </form>
+          </Card>
+
+          <Box sx={{ textAlign: "center", mt: 6 }}>
+            <Typography variant="body2" color="text.secondary">
+              Alternatively, you can reach us at: contact@vipblog.com
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
     </ThemeProvider>
   );
 };
