@@ -122,16 +122,19 @@ function Blog() {
     fetchBlogs();
   }, []);
 
-  const handleSave = (blogId) => {
+  const handleSave = (e, blogId) => {
+    e.stopPropagation();
     setSaved((prev) => ({ ...prev, [blogId]: !prev[blogId] }));
   };
 
-  const handleLike = (blogId) => {
+  const handleLike = (e, blogId) => {
+    e.stopPropagation();
     setLiked((prev) => ({ ...prev, [blogId]: !prev[blogId] }));
   };
 
-  const handleMenuOpen = (event, blog) => {
-    setAnchorEl(event.currentTarget);
+  const handleMenuOpen = (e, blog) => {
+    e.stopPropagation();
+    setAnchorEl(e.currentTarget);
     setCurrentBlog(blog);
   };
 
@@ -203,211 +206,218 @@ function Blog() {
             <Grid container spacing={4}>
               {blogs.map((blog) => (
                 <Grid item key={blog.id} xs={12} sm={6} md={4} lg={3}>
-                  <Card sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    transition: "all 0.3s ease",
-                    boxShadow: 2,
-                    "&:hover": {
-                      transform: "translateY(-8px)",
-                      boxShadow: 3,
-                      "& .blog-image": {
-                        transform: "scale(1.05)"
-                      }
-                    },
-                    border: "none",
-                    overflow: "hidden",
-                    position: "relative"
-                  }}>
-                    {blog.premium && (
-                      <Box sx={{
-                        position: "absolute",
-                        top: 16,
-                        right: 16,
-                        zIndex: 1,
-                        backgroundColor: "secondary.main",
-                        color: "primary.dark",
-                        px: 1.5,
-                        py: 0.5,
-                        borderRadius: 1,
-                        fontSize: 12,
-                        fontWeight: 700,
-                        boxShadow: 1
-                      }}>
-                        PREMIUM
-                      </Box>
-                    )}
-
-                    <Box sx={{ position: "relative", overflow: "hidden", height: 200 }}>
-                      <CardMedia
-                        className="blog-image"
-                        component="img"
-                        height="200"
-                        image={blog?.imageUrl || blog?.author?.image || "https://source.unsplash.com/random/600x400/?luxury,blog"}
-                        alt={blog.title}
-                        sx={{
-                          objectFit: "cover",
-                          transition: "transform 0.5s ease",
-                          width: "100%"
-                        }}
-                      />
-                      <Box sx={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        height: "40%",
-                        background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)"
-                      }} />
-                      <Box sx={{
-                        position: "absolute",
-                        bottom: 16,
-                        left: 16,
-                        right: 16,
+                  <Box onClick={() => navigate(`/blog/${blog.id}`)} sx={{ cursor: "pointer", height: "100%" }}>
+                    <Card
+                      sx={{
+                        height: "100%",
                         display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "flex-end"
-                      }}>
-                        <Typography variant="caption" sx={{
-                          color: "#ffffff",
-                          fontWeight: 500,
-                          fontSize: 12
+                        flexDirection: "column",
+                        transition: "all 0.3s ease",
+                        boxShadow: 2,
+                        "&:hover": {
+                          transform: "translateY(-8px)",
+                          boxShadow: 3,
+                          "& .blog-image": {
+                            transform: "scale(1.05)"
+                          }
+                        },
+                        border: "none",
+                        overflow: "hidden",
+                        position: "relative"
+                      }}
+                    >
+                      {blog.premium && (
+                        <Box sx={{
+                          position: "absolute",
+                          top: 16,
+                          right: 16,
+                          zIndex: 1,
+                          backgroundColor: "secondary.main",
+                          color: "primary.dark",
+                          px: 1.5,
+                          py: 0.5,
+                          borderRadius: 1,
+                          fontSize: 12,
+                          fontWeight: 700,
+                          boxShadow: 1
                         }}>
-                          {formatDate(blog.createdAt)}
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <CardContent sx={{ flexGrow: 1, p: 3, pb: 0, display: "flex", flexDirection: "column" }}>
-                      <Typography variant="h5" component="h2" sx={{
-                        mb: 2,
-                        minHeight: 64,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis"
-                      }}>
-                        {blog.title}
-                      </Typography>
-                      <Typography variant="body2" sx={{
-                        color: "text.secondary",
-                        mb: 3,
-                        flexGrow: 1,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis"
-                      }}>
-                        {blog.content}
-                      </Typography>
-
-                      <Box sx={{ display: "flex", alignItems: "center", mt: "auto", mb: 1.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
-                          <RemoveRedEye fontSize="small" sx={{ color: "text.secondary", mr: 0.5 }} />
-                          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                            {blog.views || 0}
-                          </Typography>
+                          PREMIUM
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
-                          <Comment fontSize="small" sx={{ color: "text.secondary", mr: 0.5 }} />
-                          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                            {blog.comments || 0}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ flexGrow: 1 }} />
-                        <IconButton
-                          size="small"
-                          onClick={() => handleLike(blog.id)}
+                      )}
+
+                      <Box sx={{ position: "relative", overflow: "hidden", height: 200 }}>
+                        <CardMedia
+                          className="blog-image"
+                          component="img"
+                          height="200"
+                          image={blog?.imageUrl || blog?.author?.image || "https://source.unsplash.com/random/600x400/?luxury,blog"}
+                          alt={blog.title}
                           sx={{
-                            color: liked[blog.id] ? "secondary.main" : "text.secondary",
-                            "&:hover": {
-                              backgroundColor: alpha(theme.palette.secondary.main, 0.1)
-                            }
+                            objectFit: "cover",
+                            transition: "transform 0.5s ease",
+                            width: "100%"
                           }}
-                        >
-                          {liked[blog.id] ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />}
-                        </IconButton>
-                        <Typography variant="caption" sx={{
-                          color: liked[blog.id] ? "secondary.main" : "text.secondary",
-                          mr: 1.5
-                        }}>
-                          {(blog.likes || 0) + (liked[blog.id] ? 1 : 0)}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-
-                    <Divider sx={{ mx: 3 }} />
-
-                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", p: 3, pt: 2 }}>
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar src={blog?.author?.image} alt={blog?.author?.name} sx={{
-                          width: 40,
-                          height: 40,
-                          mr: 2,
-                          border: "2px solid",
-                          borderColor: "primary.light"
+                        />
+                        <Box sx={{
+                          position: "absolute",
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          height: "40%",
+                          background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent)"
                         }} />
-                        <Box>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                            {blog?.author?.name || "Expert Writer"}
-                          </Typography>
-                          <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                            {blog?.author?.role || "Content Specialist"}
+                        <Box sx={{
+                          position: "absolute",
+                          bottom: 16,
+                          left: 16,
+                          right: 16,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-end"
+                        }}>
+                          <Typography variant="caption" sx={{
+                            color: "#ffffff",
+                            fontWeight: 500,
+                            fontSize: 12
+                          }}>
+                            {formatDate(blog.createdAt)}
                           </Typography>
                         </Box>
                       </Box>
-                      <Box>
-                        <IconButton
-                          size="small"
-                          onClick={() => handleSave(blog.id)}
-                          sx={{
-                            color: saved[blog.id] ? "secondary.main" : "text.secondary",
-                            "&:hover": {
-                              backgroundColor: alpha(theme.palette.secondary.main, 0.1)
-                            }
-                          }}
-                        >
-                          {saved[blog.id] ? <Bookmark fontSize="small" /> : <BookmarkBorder fontSize="small" />}
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          onClick={(e) => handleMenuOpen(e, blog)}
-                          sx={{
-                            color: "text.secondary",
-                            "&:hover": {
-                              backgroundColor: alpha(theme.palette.primary.main, 0.1)
-                            }
-                          }}
-                        >
-                          <MoreVert fontSize="small" />
-                        </IconButton>
-                      </Box>
-                    </Box>
 
-                    <Box sx={{ px: 3, pb: 3 }}>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        onClick={() => navigate(`/blog/${blog.id}`)}
-                        sx={{
-                          backgroundColor: "primary.main",
-                          "&:hover": {
-                            backgroundColor: "primary.dark"
-                          },
-                          py: 1.5,
-                          borderRadius: 2,
-                          textTransform: "none",
-                          fontSize: 15,
-                          fontWeight: 600
-                        }}
-                      >
-                        Read Full Article
-                      </Button>
-                    </Box>
-                  </Card>
+                      <CardContent sx={{ flexGrow: 1, p: 3, pb: 0, display: "flex", flexDirection: "column" }}>
+                        <Typography variant="h5" component="h2" sx={{
+                          mb: 2,
+                          minHeight: 64,
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
+                        }}>
+                          {blog.title}
+                        </Typography>
+                        <Typography variant="body2" sx={{
+                          color: "text.secondary",
+                          mb: 3,
+                          flexGrow: 1,
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis"
+                        }}>
+                          {blog.content}
+                        </Typography>
+
+                        <Box sx={{ display: "flex", alignItems: "center", mt: "auto", mb: 1.5 }}>
+                          <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
+                            <RemoveRedEye fontSize="small" sx={{ color: "text.secondary", mr: 0.5 }} />
+                            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                              {blog.views || 0}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: "flex", alignItems: "center", mr: 2 }}>
+                            <Comment fontSize="small" sx={{ color: "text.secondary", mr: 0.5 }} />
+                            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                              {blog.comments || 0}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ flexGrow: 1 }} />
+                          <IconButton
+                            size="small"
+                            onClick={(e) => handleLike(e, blog.id)}
+                            sx={{
+                              color: liked[blog.id] ? "secondary.main" : "text.secondary",
+                              "&:hover": {
+                                backgroundColor: alpha(theme.palette.secondary.main, 0.1)
+                              }
+                            }}
+                          >
+                            {liked[blog.id] ? <Favorite fontSize="small" /> : <FavoriteBorder fontSize="small" />}
+                          </IconButton>
+                          <Typography variant="caption" sx={{
+                            color: liked[blog.id] ? "secondary.main" : "text.secondary",
+                            mr: 1.5
+                          }}>
+                            {(blog.likes || 0) + (liked[blog.id] ? 1 : 0)}
+                          </Typography>
+                        </Box>
+                      </CardContent>
+
+                      <Divider sx={{ mx: 3 }} />
+
+                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", p: 3, pt: 2 }}>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <Avatar src={blog?.author?.image} alt={blog?.author?.name} sx={{
+                            width: 40,
+                            height: 40,
+                            mr: 2,
+                            border: "2px solid",
+                            borderColor: "primary.light"
+                          }} />
+                          <Box>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                              {blog?.author?.name || "Expert Writer"}
+                            </Typography>
+                            <Typography variant="caption" sx={{ color: "text.secondary" }}>
+                              {blog?.author?.role || "Content Specialist"}
+                            </Typography>
+                          </Box>
+                        </Box>
+                        <Box>
+                          <IconButton
+                            size="small"
+                            onClick={(e) => handleSave(e, blog.id)}
+                            sx={{
+                              color: saved[blog.id] ? "secondary.main" : "text.secondary",
+                              "&:hover": {
+                                backgroundColor: alpha(theme.palette.secondary.main, 0.1)
+                              }
+                            }}
+                          >
+                            {saved[blog.id] ? <Bookmark fontSize="small" /> : <BookmarkBorder fontSize="small" />}
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            onClick={(e) => handleMenuOpen(e, blog)}
+                            sx={{
+                              color: "text.secondary",
+                              "&:hover": {
+                                backgroundColor: alpha(theme.palette.primary.main, 0.1)
+                              }
+                            }}
+                          >
+                            <MoreVert fontSize="small" />
+                          </IconButton>
+                        </Box>
+                      </Box>
+
+                      <Box sx={{ px: 3, pb: 3 }}>
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/blog/${blog.id}`);
+                          }}
+                          sx={{
+                            backgroundColor: "primary.main",
+                            "&:hover": {
+                              backgroundColor: "primary.dark"
+                            },
+                            py: 1.5,
+                            borderRadius: 2,
+                            textTransform: "none",
+                            fontSize: 15,
+                            fontWeight: 600
+                          }}
+                        >
+                          Read Full Article
+                        </Button>
+                      </Box>
+                    </Card>
+                  </Box>
                 </Grid>
               ))}
             </Grid>

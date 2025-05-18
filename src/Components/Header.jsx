@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  NotificationsOutlined,
   MailOutline,
   ExitToApp,
   Person
@@ -25,7 +24,6 @@ import {
 import { AuthContext } from '../Context/AuthContext';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { toast } from 'react-toastify';
-import Notification from '../Pages/Notification';
 
 const defaultProfilePic = "https://ufrsante.uidt.sn/wp-content/uploads/2023/09/default-avatar-profile-icon-vector-social-media-user-photo-700-205577532.jpg";
 
@@ -290,11 +288,7 @@ const Header = () => {
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-                <IconButton size="large" color="inherit" sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                  <Badge>
-                    <Notification />
-                  </Badge>
-                </IconButton>
+
                 <IconButton
                   size="large"
                   edge="end"
