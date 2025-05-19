@@ -228,8 +228,8 @@ function About() {
             <Grid container spacing={4}>
               {[
                 { name: "Owais", role: "Founder & CEO", image: "/images/alice.jpg" },
-                { name: "Uzair", role: "Lead Developer", image: "/images/john.jpg" },
-                { name: "Samad", role: "Content Strategist", image: "/images/emma.jpg" }
+                { name: "Mudasir", role: "Lead Developer", image: "/images/john.jpg" },
+                { name: "Hamza", role: "Content Strategist", image: "/images/emma.jpg" }
               ].map((member, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card
